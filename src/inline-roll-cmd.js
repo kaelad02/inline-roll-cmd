@@ -14,7 +14,7 @@ Hooks.once("init", () => {
 
   // activate listeners
   const body = $("body");
-  body.on("click", "a.inline-actor-roll", onClick);
+  body.on("click", "a.inline-roll-cmd", onClick);
 });
 
 function createSkill(match, options) {
@@ -27,7 +27,7 @@ function createSkill(match, options) {
   debug("mode", mode, "skillId", skillId);
 
   const a = document.createElement("a");
-  a.classList.add("inline-actor-roll");
+  a.classList.add("inline-roll-cmd");
   a.classList.add(mode);
   a.dataset.mode = mode;
   a.dataset.func = "skill";
