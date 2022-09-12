@@ -22,9 +22,9 @@
     ]
   },
   "esmodules": [
-    "src/inline-actor-roll.js"
+    "src/inline-roll-cmd.js"
   ],
   "styles": [
-    "css/inline-actor-roll.css"
+    "css/inline-roll-cmd.css"
   ]
 }
