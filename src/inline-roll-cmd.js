@@ -1,9 +1,15 @@
 import { debug, MODULE_NAME } from "./util.js";
 
+/**
+ * Register with Developer Mode modle for debug logging.
+ */
 Hooks.once("devModeReady", ({ registerPackageDebugFlag }) =>
   registerPackageDebugFlag(MODULE_NAME)
 );
 
+/**
+ * Register the text enrichers to create the deferred inline roll buttons.
+ */
 Hooks.once("init", () => {
   // example: [[/rollSkill ath]]
   CONFIG.TextEditor.enrichers.push({
@@ -17,6 +23,12 @@ Hooks.once("init", () => {
   body.on("click", "a.inline-roll-cmd", onClick);
 });
 
+/**
+ * The rollSkill text enricher that creates a deferred inline roll button.
+ * @param {RegExpMatchArray} match the pattern match for this enricher
+ * @param {EnrichmentOptions} options the options passed to the enrich function
+ * @returns {Promise<HTMLElement>} the deferred inline roll button
+ */
 function createSkill(match, options) {
   debug("createSkill, match:", match);
 
@@ -36,6 +48,11 @@ function createSkill(match, options) {
   return a;
 }
 
+/**
+ * Normalize the roll mode found by the pattern.
+ * @param {String} mode the mode found by the pattern
+ * @returns the corresponding value from `CONST.DICE_ROLL_MODES`
+ */
 function getRollMode(mode) {
   switch (mode) {
     case "r":
@@ -57,6 +74,10 @@ function getRollMode(mode) {
   }
 }
 
+/**
+ * Listener for the deferred inline roll buttons.
+ * @param {Event} event the browser event that triggered this listener
+ */
 async function onClick(event) {
   event.preventDefault();
   const a = event.currentTarget;
