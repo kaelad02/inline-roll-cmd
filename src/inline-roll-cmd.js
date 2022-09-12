@@ -1,3 +1,9 @@
+import { debug, MODULE_NAME } from "./util.js";
+
+Hooks.once("devModeReady", ({ registerPackageDebugFlag }) =>
+  registerPackageDebugFlag(MODULE_NAME)
+);
+
 Hooks.once("init", () => {
   // example: [[/rollSkill ath]]
   CONFIG.TextEditor.enrichers.push({
@@ -11,12 +17,13 @@ Hooks.once("init", () => {
 });
 
 function createSkill(match, options) {
-  console.log("inline-actor-roll", "match", match);
+  debug("createSkill, match:", match);
 
   const mode = getRollMode(match[1]);
   const skillId = match[2];
   const skill = CONFIG.DND5E.skills[skillId]?.label ?? skillId;
   const title = game.i18n.format("DND5E.SkillPromptTitle", { skill });
+  debug("mode", mode, "skillId", skillId);
 
   const a = document.createElement("a");
   a.classList.add("inline-actor-roll");
