@@ -1,7 +1,7 @@
 {
   "id": "inline-roll-cmd",
   "title": "Inline Roll Commands",
-  "description": "???",
+  "description": "Inline Roll Commands lets you create buttons, like deferred inline rolls, to perform commands like rolling a skill.",
   "authors": [
     {
       "name": "kaelad",
