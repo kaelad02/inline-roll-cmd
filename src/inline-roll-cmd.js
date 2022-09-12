@@ -7,7 +7,8 @@ Hooks.once("devModeReady", ({ registerPackageDebugFlag }) =>
 Hooks.once("init", () => {
   // example: [[/rollSkill ath]]
   CONFIG.TextEditor.enrichers.push({
-    pattern: /\[\[\/(r|roll|pr|publicroll|gmr|gmroll|br|broll|blindroll|sr|selfroll)Skill (\w+)\]\]/gi,
+    pattern:
+      /\[\[\/(r|roll|pr|publicroll|gmr|gmroll|br|broll|blindroll|sr|selfroll)Skill (\w+)\]\]/gi,
     enricher: createSkill,
   });
 
@@ -36,7 +37,7 @@ function createSkill(match, options) {
 }
 
 function getRollMode(mode) {
-  switch(mode) {
+  switch (mode) {
     case "r":
     case "roll":
       return "roll";
