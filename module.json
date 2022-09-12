@@ -1,0 +1,30 @@
+{
+  "id": "inline-actor-roll",
+  "title": "Inline Actor Roll",
+  "description": "???",
+  "authors": [
+    {
+      "name": "kaelad",
+      "discord": "kaelad#1693"
+    }
+  ],
+  "version": "0.1",
+  "compatibility": {
+    "minimum": 10,
+    "verified": 10
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system"
+      }
+    ]
+  },
+  "esmodules": [
+    "src/inline-actor-roll.js"
+  ],
+  "styles": [
+    "css/inline-actor-roll.css"
+  ]
+}
