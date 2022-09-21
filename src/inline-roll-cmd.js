@@ -3,9 +3,7 @@ import { debug, MODULE_NAME } from "./util.js";
 /**
  * Register with Developer Mode modle for debug logging.
  */
-Hooks.once("devModeReady", ({ registerPackageDebugFlag }) =>
-  registerPackageDebugFlag(MODULE_NAME)
-);
+Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => registerPackageDebugFlag(MODULE_NAME));
 
 /**
  * Register the text enrichers to create the deferred inline roll buttons.
@@ -116,15 +114,8 @@ async function onClick(event) {
   switch (a.dataset.func) {
     case "skill":
       for (const token of tokens) {
-        const speaker = ChatMessage.getSpeaker({
-          scene: canvas.scene,
-          token: token.document,
-        });
-        await token.actor.rollSkill(a.dataset.skillId, {
-          event,
-          rollMode,
-          speaker,
-        });
+        const speaker = ChatMessage.getSpeaker({ scene: canvas.scene, token: token.document });
+        await token.actor.rollSkill(a.dataset.skillId, { event, rollMode, speaker });
       }
       break;
     case "abilityCheck":
