@@ -16,20 +16,40 @@ Say a feature requires a skill check. Currently, the dnd5e system does not suppo
 
 If you are familiar with the deferred inline rolls that Foundry supports, then this should look familiar. You write a command inside square brackets that will trigger that command when clicked.
 
-General Syntax: `[[/<roll-mode><command> <command arguments>]]`
+**General Syntax:** `[[/<roll-mode><command> <command arguments>]]`
 
-### Commands
-
-Currently, only the Skill command is supported but there are plans to add other kind of rolls (e.g. ability check and saving throw).
-
-#### Skill
+### Skill Command
 
 This command will trigger a skill check for the currently-selected tokens. The command requires the skill ID (the short, 3-letter code) for the skill you want to roll. You can find the skill IDs by typing `CONFIG.DND5E.skills` into the browser's console.
 
-**Example:** `[[/rollSkill ath]]` will produce a button to `roll` a `Skill` with the ID `ath` (short for Athletics).
+**Example:** `[[/rollSkill ath]]` generates a button to make an Athletics check
+
+### Ability Command
+
+This command will trigger an ability check for the currently-selected tokens. The command requires the ability ID (the short, 3-letter code) for the ability check you want to roll. You can find the ability IDs by typing `CONFIG.DND5E.abilities` into the browser's console.
+
+**Example:** `[[/rollAbility str]]` generates a button to make a Strength ability check
+
+### Save Command
+
+This command will trigger a saving throw for the currently-selected tokens. The command requires the ability ID (the short, 3-letter code) for the saving throw you want to roll. You can find the ability IDs by typing `CONFIG.DND5E.abilities` into the browser's console.
+
+**Example:** `[[/rollSave dex]]` generates a button to make a Dexterity saving throw
 
 ### Roll Modes
 
 In additon to the regular `/roll` that uses the current roll mode at the bottom of the chat log, you can explicitly make the button perform other roll modes using their syntax. Useful if you want to prompt players to make a blind roll so only the GM sees the result by using `/blindroll`, `/broll`, or `/br`. More information on roll modes can be found on the [Basic Dice](https://foundryvtt.com/article/dice/) Foundry KB article.
 
 **Example:** `[[/gmrSkill ath]]` for a GM Roll or `[[/srSkill ath]]` for a Self Roll
+
+## Possible Enhancements
+
+There are other possible `Actor5e` functions that could be turned into commands. If you feel like one of these would be useful to you, please file a GitHub issue and I'll consider adding it.
+
+- `rollDeathSave`
+- `rollHitDie`
+- `shortRest`
+- `longRest`
+- `convertCurrency`
+- `transformInto` (unlikely, has too many arguments)
+- `revertOriginalForm`
