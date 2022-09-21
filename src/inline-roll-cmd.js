@@ -23,6 +23,13 @@ Hooks.once("init", () => {
     enricher: createAbility,
   });
 
+  // example: [[/rollSave dex]]
+  CONFIG.TextEditor.enrichers.push({
+    pattern:
+      /\[\[\/(r|roll|pr|publicroll|gmr|gmroll|br|broll|blindroll|sr|selfroll)Save (\w+)\]\]/gi,
+    enricher: createSave,
+  });
+
   // activate listeners
   const body = $("body");
   body.on("click", "a.inline-roll-cmd", onClick);
@@ -67,6 +74,25 @@ function createAbility(match, options) {
   a.classList.add(mode);
   a.dataset.mode = mode;
   a.dataset.func = "abilityCheck";
+  a.dataset.abilityId = abilityId;
+  a.innerHTML = `<i class="fas fa-dice-d20"></i>${title}`;
+  return a;
+}
+
+function createSave(match, options) {
+  debug("createSave, match:", match);
+
+  const mode = getRollMode(match[1]);
+  const abilityId = match[2];
+  const ability = CONFIG.DND5E.abilities[abilityId] ?? "";
+  const title = game.i18n.format("DND5E.SavePromptTitle", { ability });
+  debug("mode", mode, "abilityId", abilityId);
+
+  const a = document.createElement("a");
+  a.classList.add("inline-roll-cmd");
+  a.classList.add(mode);
+  a.dataset.mode = mode;
+  a.dataset.func = "save";
   a.dataset.abilityId = abilityId;
   a.innerHTML = `<i class="fas fa-dice-d20"></i>${title}`;
   return a;
@@ -122,6 +148,12 @@ async function onClick(event) {
       for (const token of tokens) {
         const speaker = ChatMessage.getSpeaker({ scene: canvas.scene, token: token.document });
         await token.actor.rollAbilityTest(a.dataset.abilityId, { event, rollMode, speaker });
+      }
+      break;
+    case "save":
+      for (const token of tokens) {
+        const speaker = ChatMessage.getSpeaker({ scene: canvas.scene, token: token.document });
+        await token.actor.rollAbilitySave(a.dataset.abilityId, { event, rollMode, speaker });
       }
       break;
   }
