@@ -18,6 +18,13 @@ Hooks.once("init", () => {
     enricher: createSkill,
   });
 
+  // example: [[/rollAbility str]]
+  CONFIG.TextEditor.enrichers.push({
+    pattern:
+      /\[\[\/(r|roll|pr|publicroll|gmr|gmroll|br|broll|blindroll|sr|selfroll)Ability (\w+)\]\]/gi,
+    enricher: createAbility,
+  });
+
   // activate listeners
   const body = $("body");
   body.on("click", "a.inline-roll-cmd", onClick);
@@ -44,6 +51,25 @@ function createSkill(match, options) {
   a.dataset.mode = mode;
   a.dataset.func = "skill";
   a.dataset.skillId = skillId;
+  a.innerHTML = `<i class="fas fa-dice-d20"></i>${title}`;
+  return a;
+}
+
+function createAbility(match, options) {
+  debug("createAbility, match:", match);
+
+  const mode = getRollMode(match[1]);
+  const abilityId = match[2];
+  const ability = CONFIG.DND5E.abilities[abilityId] ?? "";
+  const title = game.i18n.format("DND5E.AbilityPromptTitle", { ability });
+  debug("mode", mode, "abilityId", abilityId);
+
+  const a = document.createElement("a");
+  a.classList.add("inline-roll-cmd");
+  a.classList.add(mode);
+  a.dataset.mode = mode;
+  a.dataset.func = "abilityCheck";
+  a.dataset.abilityId = abilityId;
   a.innerHTML = `<i class="fas fa-dice-d20"></i>${title}`;
   return a;
 }
@@ -99,6 +125,12 @@ async function onClick(event) {
           rollMode,
           speaker,
         });
+      }
+      break;
+    case "abilityCheck":
+      for (const token of tokens) {
+        const speaker = ChatMessage.getSpeaker({ scene: canvas.scene, token: token.document });
+        await token.actor.rollAbilityTest(a.dataset.abilityId, { event, rollMode, speaker });
       }
       break;
   }
