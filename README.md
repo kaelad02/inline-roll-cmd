@@ -14,9 +14,9 @@ Say a feature requires a skill check. Currently, the dnd5e system does not suppo
 
 ## Usage
 
-If you are familiar with the deferred inline rolls that Foundry supports, then this should look familiar. You write a command inside square brackets that will trigger that command when clicked.
+If you are familiar with the deferred inline rolls that Foundry supports, then this should look familiar. You write a command inside square brackets that will trigger that command when clicked. You can optionally pass a flavor at the end to override the button text and use as flavor text when rolled.
 
-**General Syntax:** `[[/<roll-mode><command> <command arguments>]]`
+**General Syntax:** `[[/<roll-mode><command> <command arguments>]]{<flavor>}`
 
 ### Skill Command
 
