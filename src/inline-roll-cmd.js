@@ -3,9 +3,7 @@ import { debug, MODULE_NAME } from "./util.js";
 /**
  * Register with Developer Mode modle for debug logging.
  */
-Hooks.once("devModeReady", ({ registerPackageDebugFlag }) =>
-  registerPackageDebugFlag(MODULE_NAME)
-);
+Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => registerPackageDebugFlag(MODULE_NAME));
 
 /**
  * Register the text enrichers to create the deferred inline roll buttons.
@@ -14,8 +12,22 @@ Hooks.once("init", () => {
   // example: [[/rollSkill ath]]
   CONFIG.TextEditor.enrichers.push({
     pattern:
-      /\[\[\/(r|roll|pr|publicroll|gmr|gmroll|br|broll|blindroll|sr|selfroll)Skill (\w+)\]\]/gi,
+      /\[\[\/(r|roll|pr|publicroll|gmr|gmroll|br|broll|blindroll|sr|selfroll)Skill (\w+)\]\](?:{([^}]+)})?/gi,
     enricher: createSkill,
+  });
+
+  // example: [[/rollAbility str]]
+  CONFIG.TextEditor.enrichers.push({
+    pattern:
+      /\[\[\/(r|roll|pr|publicroll|gmr|gmroll|br|broll|blindroll|sr|selfroll)Ability (\w+)\]\](?:{([^}]+)})?/gi,
+    enricher: createAbility,
+  });
+
+  // example: [[/rollSave dex]]
+  CONFIG.TextEditor.enrichers.push({
+    pattern:
+      /\[\[\/(r|roll|pr|publicroll|gmr|gmroll|br|broll|blindroll|sr|selfroll)Save (\w+)\]\](?:{([^}]+)})?/gi,
+    enricher: createSave,
   });
 
   // activate listeners
@@ -34,18 +46,38 @@ function createSkill(match, options) {
 
   const mode = getRollMode(match[1]);
   const skillId = match[2];
+  const flavor = match[3];
   const skill = CONFIG.DND5E.skills[skillId]?.label ?? skillId;
   const title = game.i18n.format("DND5E.SkillPromptTitle", { skill });
   debug("mode", mode, "skillId", skillId);
 
-  const a = document.createElement("a");
-  a.classList.add("inline-roll-cmd");
-  a.classList.add(mode);
-  a.dataset.mode = mode;
-  a.dataset.func = "skill";
-  a.dataset.skillId = skillId;
-  a.innerHTML = `<i class="fas fa-dice-d20"></i>${title}`;
-  return a;
+  return createButton(mode, "skill", { skillId }, flavor, title);
+}
+
+function createAbility(match, options) {
+  debug("createAbility, match:", match);
+
+  const mode = getRollMode(match[1]);
+  const abilityId = match[2];
+  const flavor = match[3];
+  const ability = CONFIG.DND5E.abilities[abilityId] ?? "";
+  const title = game.i18n.format("DND5E.AbilityPromptTitle", { ability });
+  debug("mode", mode, "abilityId", abilityId);
+
+  return createButton(mode, "abilityCheck", { abilityId }, flavor, title);
+}
+
+function createSave(match, options) {
+  debug("createSave, match:", match);
+
+  const mode = getRollMode(match[1]);
+  const abilityId = match[2];
+  const flavor = match[3];
+  const ability = CONFIG.DND5E.abilities[abilityId] ?? "";
+  const title = game.i18n.format("DND5E.SavePromptTitle", { ability });
+  debug("mode", mode, "abilityId", abilityId);
+
+  return createButton(mode, "save", { abilityId }, flavor, title);
 }
 
 /**
@@ -74,6 +106,23 @@ function getRollMode(mode) {
   }
 }
 
+function createButton(mode, func, commandArgs, flavor, title) {
+  const a = document.createElement("a");
+  // add classes
+  a.classList.add("inline-roll-cmd");
+  a.classList.add(mode);
+  // add dataset
+  a.dataset.mode = mode;
+  a.dataset.func = func;
+  a.dataset.flavor = flavor ?? "";
+  for (const [k, v] of Object.entries(commandArgs)) {
+    a.dataset[k] = v;
+  }
+  // the text inside
+  a.innerHTML = `<i class="fas fa-dice-d20"></i>${flavor ?? title}`;
+  return a;
+}
+
 /**
  * Listener for the deferred inline roll buttons.
  * @param {Event} event the browser event that triggered this listener
@@ -87,15 +136,32 @@ async function onClick(event) {
   // get the rollMode, leave undefined for roll so the chat log setting is used
   const rollMode = a.dataset.mode === "roll" ? undefined : a.dataset.mode;
 
+  const flavor = a.dataset.flavor;
+
   switch (a.dataset.func) {
     case "skill":
       for (const token of tokens) {
-        const speaker = ChatMessage.getSpeaker({
-          scene: canvas.scene,
-          token: token.document,
-        });
-        await token.actor.rollSkill(a.dataset.skillId, {
+        const speaker = ChatMessage.getSpeaker({ scene: canvas.scene, token: token.document });
+        await token.actor.rollSkill(a.dataset.skillId, { event, flavor, rollMode, speaker });
+      }
+      break;
+    case "abilityCheck":
+      for (const token of tokens) {
+        const speaker = ChatMessage.getSpeaker({ scene: canvas.scene, token: token.document });
+        await token.actor.rollAbilityTest(a.dataset.abilityId, {
           event,
+          flavor,
+          rollMode,
+          speaker,
+        });
+      }
+      break;
+    case "save":
+      for (const token of tokens) {
+        const speaker = ChatMessage.getSpeaker({ scene: canvas.scene, token: token.document });
+        await token.actor.rollAbilitySave(a.dataset.abilityId, {
+          event,
+          flavor,
           rollMode,
           speaker,
         });
