@@ -30,6 +30,12 @@ Hooks.once("init", () => {
     enricher: createSave,
   });
 
+  // example: [[/rollItem dex]]
+  CONFIG.TextEditor.enrichers.push({
+    pattern: /\[\[\/rollItem ([^\]]+)\]\](?:{([^}]+)})?/gi,
+    enricher: createItem,
+  });
+
   // activate listeners
   const body = $("body");
   body.on("click", "a.inline-roll-cmd", onClick);
@@ -78,6 +84,16 @@ function createSave(match, options) {
   debug("mode", mode, "abilityId", abilityId);
 
   return createButton(mode, "save", { abilityId }, flavor, title);
+}
+
+function createItem(match, options) {
+  debug("createItem, match:", match);
+
+  const itemName = match[1];
+  const flavor = match[2];
+  debug("itemName", itemName);
+
+  return createButton("roll", "item", { itemName }, flavor, itemName);
 }
 
 /**
@@ -166,6 +182,9 @@ async function onClick(event) {
           speaker,
         });
       }
+      break;
+    case "item":
+      dnd5e.documents.macro.rollItem(a.dataset.itemName);
       break;
   }
 }
