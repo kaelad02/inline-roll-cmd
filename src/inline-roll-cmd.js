@@ -93,7 +93,7 @@ function createItem(match, options) {
   const flavor = match[2];
   debug("itemName", itemName);
 
-  return createButton("roll", "item", { itemName }, flavor, itemName);
+  return createItemButton(itemName, flavor);
 }
 
 /**
@@ -136,6 +136,23 @@ function createButton(mode, func, commandArgs, flavor, title) {
   }
   // the text inside
   a.innerHTML = `<i class="fas fa-dice-d20"></i>${flavor ?? title}`;
+  return a;
+}
+
+function createItemButton(itemName, flavor) {
+  const a = document.createElement("a");
+  // add classes
+  a.classList.add("inline-roll-cmd");
+  a.classList.add("roll");
+  // add dataset
+  a.dataset.func = "item";
+  a.dataset.itemName = itemName;
+  a.dataset.flavor = flavor ?? "";
+  // the text inside
+  const img = "icons/weapons/daggers/dagger-jeweled-purple.webp";
+  //a.innerHTML = `<div class="item-image" style="background-image: url('${img}')"></div> ${flavor ?? itemName}`;
+  a.innerHTML = `<img class="item-image" src="${img}"></img>${flavor ?? itemName}`;
+  //a.innerHTML = `<i class="fas fa-dice-d20"></i><i class="fas fa-suitcase"></i>${flavor ?? itemName}`;
   return a;
 }
 
