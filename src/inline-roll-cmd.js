@@ -88,12 +88,29 @@ function createSave(match, options) {
 
 function createItem(match, options) {
   debug("createItem, match:", match);
+  debug("createItem, options:", options);
 
   const itemName = match[1];
   const flavor = match[2];
   debug("itemName", itemName);
 
-  return createItemButton(itemName, flavor);
+  let img;
+  if (options?.relativeTo?.actor) {
+    // find the image from the relativeTo option
+    const actor = options.relativeTo.actor;
+    const item = actor.items.getName(itemName);
+    if (item) img = item.img;
+  } else if (game.user.character) {
+    // find the image from the assigned character
+    const actor = game.user.character;
+    const item = actor.items.getName(itemName);
+    if (item) img = item.img;
+  }
+
+  debug("img", img);
+  return img
+    ? createItemButton(itemName, flavor, img)
+    : createButton("roll", "item", { itemName }, flavor, itemName);
 }
 
 /**
@@ -139,20 +156,19 @@ function createButton(mode, func, commandArgs, flavor, title) {
   return a;
 }
 
-function createItemButton(itemName, flavor) {
+function createItemButton(itemName, flavor, img) {
   const a = document.createElement("a");
   // add classes
   a.classList.add("inline-roll-cmd");
   a.classList.add("roll");
   // add dataset
+  a.dataset.mode = "roll";
   a.dataset.func = "item";
   a.dataset.itemName = itemName;
-  a.dataset.flavor = flavor ?? "";
+  //a.dataset.flavor = flavor ?? "";
   // the text inside
-  const img = "icons/weapons/daggers/dagger-jeweled-purple.webp";
   //a.innerHTML = `<div class="item-image" style="background-image: url('${img}')"></div> ${flavor ?? itemName}`;
   a.innerHTML = `<img class="item-image" src="${img}"></img>${flavor ?? itemName}`;
-  //a.innerHTML = `<i class="fas fa-dice-d20"></i><i class="fas fa-suitcase"></i>${flavor ?? itemName}`;
   return a;
 }
 
