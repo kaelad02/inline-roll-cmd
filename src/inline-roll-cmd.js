@@ -168,7 +168,8 @@ function createItemButton(itemName, flavor, img) {
   //a.dataset.flavor = flavor ?? "";
   // the text inside
   //a.innerHTML = `<div class="item-image" style="background-image: url('${img}')"></div> ${flavor ?? itemName}`;
-  a.innerHTML = `<img class="item-image" src="${img}"></img>${flavor ?? itemName}`;
+  //a.innerHTML = `<img class="item-image" src="${img}"></img>${flavor ?? itemName}`;
+  a.innerHTML = `<i class="item-image" style="background-image: url('${img}')""></i>${flavor ?? itemName}`;
   return a;
 }
 
