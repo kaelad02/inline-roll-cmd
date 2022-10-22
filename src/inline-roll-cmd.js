@@ -30,7 +30,7 @@ Hooks.once("init", () => {
     enricher: createSave,
   });
 
-  // example: [[/rollItem dex]]
+  // example: [[/rollItem Dagger]]
   CONFIG.TextEditor.enrichers.push({
     pattern: /\[\[\/rollItem ([^\]]+)\]\](?:{([^}]+)})?/gi,
     enricher: createItem,
@@ -87,12 +87,10 @@ function createSave(match, options) {
 }
 
 function createItem(match, options) {
-  debug("createItem, match:", match);
-  debug("createItem, options:", options);
+  debug("createItem, (match, options):", match, options);
 
   const itemName = match[1];
   const flavor = match[2];
-  debug("itemName", itemName);
 
   let img;
   if (options?.relativeTo?.actor) {
@@ -107,7 +105,6 @@ function createItem(match, options) {
     if (item) img = item.img;
   }
 
-  debug("img", img);
   return img
     ? createItemButton(itemName, flavor, img)
     : createButton("roll", "item", { itemName }, flavor, itemName);
@@ -165,10 +162,7 @@ function createItemButton(itemName, flavor, img) {
   a.dataset.mode = "roll";
   a.dataset.func = "item";
   a.dataset.itemName = itemName;
-  //a.dataset.flavor = flavor ?? "";
   // the text inside
-  //a.innerHTML = `<div class="item-image" style="background-image: url('${img}')"></div> ${flavor ?? itemName}`;
-  //a.innerHTML = `<img class="item-image" src="${img}"></img>${flavor ?? itemName}`;
   a.innerHTML = `<i class="item-image" style="background-image: url('${img}')""></i>${flavor ?? itemName}`;
   return a;
 }

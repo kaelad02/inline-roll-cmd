@@ -25,7 +25,6 @@ a.inline-roll-cmd.blindroll {
 
 a.inline-roll-cmd:has(.item-image) {
   display: inline-block;
-  /* background: coral; */
 }
 a.inline-roll-cmd .item-image {
   display: inline-block;
@@ -36,12 +35,6 @@ a.inline-roll-cmd .item-image {
   border: none;
   margin-right: 5px;
 }
-/* a.inline-roll-cmd img.item-image {
-  width: 30px;
-  height: 30px;
-  border: none;
-  margin-right: 5px;
-} */
 a.inline-roll-cmd:hover .item-image {
   background-image: url("../../../icons/svg/d20-grey.svg") !important;
 }
