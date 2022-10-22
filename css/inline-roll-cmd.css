@@ -20,3 +20,24 @@ a.inline-roll-cmd.blindroll {
   background: #f5eaf5;
   border-color: #6b476b;
 }
+
+/* style an inline roll with an image in it */
+
+a.inline-roll-cmd:has(.item-image) {
+  display: inline-block;
+}
+a.inline-roll-cmd .item-image {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: cover;
+  background-position: 50% 0;
+  border: none;
+  margin-right: 5px;
+}
+a.inline-roll-cmd:hover .item-image {
+  background-image: url("../../../icons/svg/d20-grey.svg") !important;
+}
+a.inline-roll-cmd .item-image:hover {
+  background-image: url("../../../icons/svg/d20-black.svg") !important;
+}

@@ -32,6 +32,12 @@ This command will trigger a saving throw for the currently-selected tokens. The 
 
 **Example:** `[[/rollSave dex]]` to make a Dexterity saving throw
 
+### Item Command
+
+This command will use an item that the selected token has. The command requires the name of the item you want to use and only supports the `roll` Roll Mode.
+
+**Example:** `[[/rollItem Dagger]]` to use a Dagger
+
 ### Roll Modes
 
 In additon to the regular `/roll` that uses the current roll mode at the bottom of the chat log, you can explicitly make the button perform other roll modes using their syntax. Useful if you want to prompt players to make a blind roll so only the GM sees the result by using `/blindroll`. More information on roll modes can be found on the [Basic Dice](https://foundryvtt.com/article/dice/) Foundry KB article.

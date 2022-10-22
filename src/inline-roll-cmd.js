@@ -30,6 +30,12 @@ Hooks.once("init", () => {
     enricher: createSave,
   });
 
+  // example: [[/rollItem Dagger]]
+  CONFIG.TextEditor.enrichers.push({
+    pattern: /\[\[\/rollItem ([^\]]+)\]\](?:{([^}]+)})?/gi,
+    enricher: createItem,
+  });
+
   // activate listeners
   const body = $("body");
   body.on("click", "a.inline-roll-cmd", onClick);
@@ -80,6 +86,30 @@ function createSave(match, options) {
   return createButton(mode, "save", { abilityId }, flavor, title);
 }
 
+function createItem(match, options) {
+  debug("createItem, (match, options):", match, options);
+
+  const itemName = match[1];
+  const flavor = match[2];
+
+  let img;
+  if (options?.relativeTo?.actor) {
+    // find the image from the relativeTo option
+    const actor = options.relativeTo.actor;
+    const item = actor.items.getName(itemName);
+    if (item) img = item.img;
+  } else if (game.user.character) {
+    // find the image from the assigned character
+    const actor = game.user.character;
+    const item = actor.items.getName(itemName);
+    if (item) img = item.img;
+  }
+
+  return img
+    ? createItemButton(itemName, flavor, img)
+    : createButton("roll", "item", { itemName }, flavor, itemName);
+}
+
 /**
  * Normalize the roll mode found by the pattern.
  * @param {String} mode the mode found by the pattern
@@ -120,6 +150,20 @@ function createButton(mode, func, commandArgs, flavor, title) {
   }
   // the text inside
   a.innerHTML = `<i class="fas fa-dice-d20"></i>${flavor ?? title}`;
+  return a;
+}
+
+function createItemButton(itemName, flavor, img) {
+  const a = document.createElement("a");
+  // add classes
+  a.classList.add("inline-roll-cmd");
+  a.classList.add("roll");
+  // add dataset
+  a.dataset.mode = "roll";
+  a.dataset.func = "item";
+  a.dataset.itemName = itemName;
+  // the text inside
+  a.innerHTML = `<i class="item-image" style="background-image: url('${img}')""></i>${flavor ?? itemName}`;
   return a;
 }
 
@@ -166,6 +210,9 @@ async function onClick(event) {
           speaker,
         });
       }
+      break;
+    case "item":
+      dnd5e.documents.macro.rollItem(a.dataset.itemName);
       break;
   }
 }
