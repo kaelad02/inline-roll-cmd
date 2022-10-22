@@ -1,3 +1,7 @@
+# 0.3
+
+- feature: add Roll Item command to use items just like a system-generated macro
+
 # 0.2
 
 - feature: add Ability command to make ability checks
