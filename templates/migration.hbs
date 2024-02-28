@@ -1,0 +1,18 @@
+<form autocomplete="off" onsubmit="event.preventDefault();">
+  <p>Migrate the world data (actors, items, and unlinked tokens on scenes) or compendium packs. This will convert any Inline Roll Commands to the new enrichers the D&amp;D 5e system includes.</p>
+  <p>Example: <code>[[/rollSkill ath]]</code> is converted to <code>[[/skill ath]]</code></p>
+
+  <div class="form-group">
+    <label>Pack to Migrate</label>
+    <select name="pack">
+      {{#each packs}}
+        <option value="{{this.metadata.id}}">{{this.title}} [{{this.metadata.packageName}}]</option>
+      {{/each}}
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <button type="submit" data-action="migrate-world"><i class="fas fa-globe"></i> Migrate World</button>
+    <button type="submit" data-action="migrate-pack"><i class="fas fa-atlas"></i> Migrate Pack</button>
+  </div>
+</form>
