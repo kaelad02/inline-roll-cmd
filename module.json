@@ -27,6 +27,9 @@
   "styles": [
     "css/inline-roll-cmd.css"
   ],
+  "languages": [
+    { "lang": "en", "name": "English", "path": "lang/en.json" }
+  ],
   "url": "replaced by workflow",
   "manifest": "replaced by workflow",
   "download": "replaced by workflow",

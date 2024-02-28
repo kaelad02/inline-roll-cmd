@@ -46,8 +46,8 @@ Hooks.once("init", () => {
 
   // register setting
   game.settings.registerMenu("inline-roll-cmd", "migrateMenu", {
-    name: "Migrate to System's Enrichers",
-    label: "Migrate",
+    name: "IRC.migrateMenuName",
+    label: "IRC.migrateMenuLabel",
     icon: "fas fa-refresh",
     type: InlineMigrationApplication,
     restricted: true,
@@ -230,7 +230,7 @@ async function onClick(event) {
 
 class InlineMigration {
   async migrateWorld() {
-    ui.notifications.info("Migrating world data to the system's enrichers", { permanent: true });
+    ui.notifications.info(game.i18n.localize("IRC.migrateWorldStart"), { permanent: true });
 
     // Migrate actors
     const actorUpdates = await this._migrateActors(game.actors);
@@ -243,7 +243,7 @@ class InlineMigration {
     // Migrate unlinked actors on scenes
     await this._migrateScenes(game.scenes);
 
-    ui.notifications.info("Migrating world data to the system's enrichers complete", { permanent: true });
+    ui.notifications.info(game.i18n.localize("IRC.migrateWorldEnd"), { permanent: true });
   }
 
   async _migrateScenes(scenes) {
@@ -297,7 +297,7 @@ class InlineMigration {
 
   async migrateCompendium(pack) {
     if (pack.locked || !["Actor", "Item", "Scene"].includes(pack.documentName)) return;
-    ui.notifications.info(`Migrating pack ${pack.title} to the system's enrichers`, { permanent: true });
+    ui.notifications.info(game.i18n.format("IRC.migrateCompendiumStart", { pack: pack.title }), { permanent: true });
 
     for (const ids of this.idChunks(pack)) {
       const updates = [];
@@ -320,7 +320,7 @@ class InlineMigration {
       }
     }
 
-    ui.notifications.info(`Migrating pack ${pack.title} to the system's enrichers complete`, { permanent: true });
+    ui.notifications.info(game.i18n.format("IRC.migrateCompendiumEnd", { pack: pack.title }), { permanent: true });
   }
 
   async migrateActorData(actor) {
@@ -423,7 +423,7 @@ globalThis.inlineMigration = new InlineMigration();
 class InlineMigrationApplication extends FormApplication {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      title: "Migrate Inline Roll Commands",
+      title: "IRC.migrateTitle",
       template: "modules/inline-roll-cmd/templates/migration.hbs",
       width: 500,
     });
