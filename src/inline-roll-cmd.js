@@ -431,9 +431,9 @@ class InlineMigrationApplication extends FormApplication {
 
   async getData(options) {
     return {
-      packs: game.packs.contents.filter((pack) => {
-        return !pack.locked && ["Actor", "Item", "Scene"].includes(pack.documentName);
-      }),
+      packs: game.packs.contents.filter(
+        (pack) => !pack.locked && ["Actor", "Item", "Scene"].includes(pack.documentName)
+      ),
     };
   }
 
