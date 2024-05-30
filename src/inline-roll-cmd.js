@@ -423,6 +423,7 @@ globalThis.inlineMigration = new InlineMigration();
 class InlineMigrationApplication extends FormApplication {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["ircmigration"],
       title: "IRC.migrateTitle",
       template: "modules/inline-roll-cmd/templates/migration.hbs",
       width: 500,
