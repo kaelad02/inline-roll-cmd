@@ -41,3 +41,18 @@ a.inline-roll-cmd:hover .item-image {
 a.inline-roll-cmd .item-image:hover {
   background-image: url("../../../icons/svg/d20-black.svg") !important;
 }
+
+/* migration form styling */
+.ircmigration .warning {
+  background: rgba(214, 150, 0, 0.8);
+  border: 1px solid var(--color-level-warning);
+  border-radius: 5px;
+  box-shadow: 0 0 10px var(--color-shadow-dark);
+  color: var(--color-text-light-1);
+  font-size: var(--font-size-14);
+  text-shadow: 1px 1px black;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  padding: 6px 8px;
+  line-height: 20px;
+}

@@ -1,3 +1,8 @@
+# 1.0
+
+- feature: v12 compatibility
+- feature: Migration to the system's enrichers
+
 # 0.3
 
 - feature: add Roll Item command to use items just like a system-generated macro

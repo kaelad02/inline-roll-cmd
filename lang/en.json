@@ -1,0 +1,17 @@
+{
+  "IRC": {
+    "migrateMenuName": "Migrate to System's Enrichers",
+    "migrateMenuLabel": "Migrate",
+    "migrateWorldStart": "Migrating world data to the system's enrichers",
+    "migrateWorldEnd": "Migrating world data to the system's enrichers complete",
+    "migrateCompendiumStart": "Migrating pack {pack} to the system's enrichers",
+    "migrateCompendiumEnd": "Migrating pack {pack} to the system's enrichers complete",
+    "migrateTitle": "Migrate Inline Roll Commands",
+    "migrateParagraph1": "Migrate the world data (actors, items, and unlinked tokens on scenes) or compendium packs. This will convert any Inline Roll Commands to the new enrichers the D&amp;D 5e system includes.",
+    "migrateParagraph2": "Example: <code>[[/rollSkill ath]]</code> is converted to <code>[[/skill ath]]</code>",
+    "migrateBackupWarning": "Backup your data before migrating, just in case.",
+    "migratePackLabel": "Pack to Migrate",
+    "migrateWorld": "Migrate World",
+    "migratePack": "Migrate Pack"
+  }
+}

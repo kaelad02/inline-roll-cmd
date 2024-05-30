@@ -1,0 +1,20 @@
+<form autocomplete="off" onsubmit="event.preventDefault();">
+  <p>{{{localize "IRC.migrateParagraph1"}}}</p>
+  <p>{{{localize "IRC.migrateParagraph2"}}}</p>
+
+  <div class="warning"><i class="fas fa-triangle-exclamation"></i> {{localize "IRC.migrateBackupWarning"}}</div>
+
+  <div class="form-group">
+    <label>{{localize "IRC.migratePackLabel"}}</label>
+    <select name="pack">
+      {{#each packs}}
+        <option value="{{this.metadata.id}}">{{this.title}} [{{this.metadata.packageName}}]</option>
+      {{/each}}
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <button type="submit" data-action="migrate-world"><i class="fas fa-globe"></i> {{localize "IRC.migrateWorld"}}</button>
+    <button type="submit" data-action="migrate-pack"><i class="fas fa-atlas"></i> {{localize "IRC.migratePack"}}</button>
+  </div>
+</form>
